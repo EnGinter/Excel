@@ -5,16 +5,24 @@ const CODES = {
 
 function createCol(content) {
   return `
-     <div class="column">
+     <div class="column" data-type="resizer" data-name=${content}>
         ${content}
+        <div class="col-resize" data-resize="col"></div>
      </div>
   `
 }
 
 function createRow(content = '', index = '') {
+  const resized = index
+      ? `<div class="row-resize" data-resize="row"></div>`
+      : ''
+
   return `
-     <div class="row">
-        <div class="row-info">${index}</div>
+     <div class="row" data-type="resizer">
+        <div class="row-info">
+            ${index}
+            ${resized}
+        </div>
         <div class="row-data">${content}</div>
      </div>
   `
@@ -22,7 +30,7 @@ function createRow(content = '', index = '') {
 
 function createCell(name) {
   return `
-    <div class="cell" contenteditable="" cellName="${name}">
+    <div class="cell" contenteditable="" data-name=${name}>
     </div>
   `
 }

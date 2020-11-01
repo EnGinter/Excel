@@ -26,6 +26,18 @@ class Dom {
     this.$selector.removeEventListener(eventType, callback)
   }
 
+  css(styles = {}) {
+    Object
+        .keys(styles)
+        .map(key => {
+          this.$selector.style[key] = styles[key]
+        })
+  }
+
+  get data() {
+    return this.$selector.dataset
+  }
+
   append(node) {
     if (node instanceof Dom) {
       node = node.$selector
@@ -37,6 +49,22 @@ class Dom {
     }
 
     return this
+  }
+
+  getCords() {
+    return this.$selector.getBoundingClientRect()
+  }
+
+  getClosest(name) {
+    return this.$selector.closest(name)
+  }
+
+  setAttribute(attr, value) {
+    return this.$selector.setAttribute(attr, value)
+  }
+
+  findAll(selector) {
+    return this.$selector.querySelectorAll(selector)
   }
 }
 
