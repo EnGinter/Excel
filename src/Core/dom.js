@@ -66,6 +66,10 @@ class Dom {
   findAll(selector) {
     return this.$selector.querySelectorAll(selector)
   }
+
+  find(selector) {
+    return this.$selector.querySelector(selector)
+  }
 }
 
 export function $(selector) {

@@ -74,7 +74,7 @@
 
         &:hover
             opacity: 1
-    
+
     .col-resize
         top: 0
         width: 3px
@@ -111,6 +111,32 @@
         width: 100vw
         height: 1px
         background: $primary-color
+
+.cell[data-active='true']
+    outline: 2px solid $outline-color
+
+.cell[data-cell-group='true']
+    background $cell-group-color
+
+.cell[data-cell-boundary-y='top']
+    border-top: 1px solid $outline-color
+
+.cell[data-cell-boundary-x='right']
+    border-right: 1px solid $outline-color
+
+.cell[data-cell-boundary-x='left']
+    border-left: 1px solid $outline-color
+
+.cell[data-cell-boundary-y='bottom']
+    border-bottom: 1px solid $outline-color
+
+.cell[data-cell-boundary-y='both']
+    border-top: 1px solid $outline-color
+    border-bottom: 1px solid $outline-color
+
+.cell[data-cell-boundary-x='both']
+    border-right: 1px solid $outline-color
+    border-left: 1px solid $outline-color
 
 
 
