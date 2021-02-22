@@ -66,6 +66,18 @@ class Dom {
   findAll(selector) {
     return this.$selector.querySelectorAll(selector)
   }
+
+  find(selector) {
+    return $(this.$selector.querySelector(selector))
+  }
+
+  addClass(className) {
+    this.$selector.classList.add(className)
+  }
+
+  removeClass(className) {
+    this.$selector.classList.remove(className)
+  }
 }
 
 export function $(selector) {

@@ -3,9 +3,9 @@ const CODES = {
   Z: 90
 }
 
-function createCol(content) {
+function createCol(content, index) {
   return `
-     <div class="column" data-type="resizer" data-name=${content}>
+     <div class="column" data-type="resizer" data-column=${index}>
         ${content}
         <div class="col-resize" data-resize="col"></div>
      </div>
@@ -28,11 +28,17 @@ function createRow(content = '', index = '') {
   `
 }
 
-function createCell(name) {
-  return `
-    <div class="cell" contenteditable="" data-name=${name}>
+function createCell(row) {
+  return function(_, col) {
+    return `
+    <div 
+      class="cell" 
+      contenteditable="" 
+      data-column="${col}" 
+      data-id="${row}:${col}">
     </div>
   `
+  }
 }
 
 function createChar(_, index) {
@@ -51,14 +57,13 @@ export function createTable(rowsCount = 25) {
 
   table.push(createRow(cols))
 
-  for (let i = 0; i < rowsCount; i++) {
+  for (let row = 0; row < rowsCount; row++) {
     const cells = new Array(colsCount)
         .fill('')
-        .map(createChar)
-        .map(el => createCell(el + (i + 1)))
+        .map(createCell(row))
         .join('')
 
-    table.push(createRow(cells, i + 1))
+    table.push(createRow(cells, row + 1))
   }
 
   return table.join('')

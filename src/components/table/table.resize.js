@@ -19,9 +19,9 @@ export const tableResize = (event, $root) => {
     }
 
     const mouseUpResizer = () => {
-      const name = $parent.data.name
+      const id = $parent.data.column
       $root
-          .findAll(`[data-name^=${name}]`)
+          .findAll(`[data-column="${id}"]`)
           .forEach(cell => $(cell).css({width: newWidth}))
 
       $resizer.css({transform: `translateX(0)`})
