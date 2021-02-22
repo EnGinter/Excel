@@ -1,14 +1,13 @@
 const selectedClass = 'selected'
 
 export class TableSelection {
-  super($root) {
-    this.root = $root
+  constructor() {
     this.selected = []
   }
 
-  select($cell) {
-    this.selected.push($cell)
-    $cell.addClass(selectedClass)
+  select($el) {
+    this.selected.push($el)
+    $el.addClass(selectedClass)
   }
 
   selectGroup() {
