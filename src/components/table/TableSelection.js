@@ -1,13 +1,21 @@
-const selectedClass = 'selected'
-
 export class TableSelection {
-  constructor() {
+  static selectedClassName = 'selected'
+
+  constructor(root) {
+    this.$root = root
     this.selected = []
   }
 
   select($el) {
+    this.clear()
+
     this.selected.push($el)
-    $el.addClass(selectedClass)
+    $el.addClass(TableSelection.selectedClassName)
+  }
+
+  clear() {
+    this.selected.forEach($el => $el.removeClass(TableSelection.selectedClassName))
+    this.selected = []
   }
 
   selectGroup() {

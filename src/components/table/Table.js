@@ -2,6 +2,8 @@ import { ExcelComponent } from '@core/ExcelComponent';
 import { createTable } from '@/components/table/table.template';
 import { tableResize } from '@/components/table/table.resize';
 import { TableSelection } from '@/components/table/TableSelection';
+import { $ } from '@core/dom';
+import { isCellLeftClick, shouldResize } from '@/components/table/table.functions';
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -18,7 +20,7 @@ export class Table extends ExcelComponent {
   }
 
   prepare() {
-    this.selection = new TableSelection()
+    this.selection = new TableSelection(this.$root)
   }
 
   init() {
@@ -29,8 +31,11 @@ export class Table extends ExcelComponent {
   }
 
   onMousedown(event) {
-    if (event.target.dataset.resize) {
+    if (shouldResize(event)) {
       tableResize(event, this.$root)
+    } else if (isCellLeftClick(event)) {
+      const $target = $(event.target)
+      this.selection.select($target)
     }
   }
 }

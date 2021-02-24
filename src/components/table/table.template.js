@@ -35,7 +35,9 @@ function createCell(row) {
       class="cell" 
       contenteditable="" 
       data-column="${col}" 
-      data-id="${row}:${col}">
+      data-id="${row}:${col}"
+      data-type="cell"
+      >
     </div>
   `
   }
