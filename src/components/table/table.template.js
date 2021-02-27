@@ -68,5 +68,9 @@ export function createTable(rowsCount = 25) {
     table.push(createRow(cells, row + 1))
   }
 
-  return table.join('')
+  return {
+    html: table.join(''),
+    rowsCount,
+    colsCount,
+  }
 }
