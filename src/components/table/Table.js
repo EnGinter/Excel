@@ -1,9 +1,13 @@
 import { ExcelComponent } from '@core/ExcelComponent';
-import { createTable } from '@/components/table/table.template';
-import { tableResize } from '@/components/table/table.resize';
-import { TableSelection } from '@/components/table/TableSelection';
+import { createTable } from './table.template';
+import { tableResize } from './table.resize';
+import { TableSelection } from './TableSelection';
 import { $ } from '@core/dom';
-import { isCellLeftClick, matrix, shouldResize } from '@/components/table/table.functions';
+import {
+  isCellLeftClick,
+  matrix,
+  shouldResize
+} from './table.functions';
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -17,8 +21,8 @@ export class Table extends ExcelComponent {
 
   toHTML() {
     const {html, rowsCount, colsCount} = createTable()
-    this.colsCount = colsCount
-    this.rowsCount = rowsCount
+    Table.colsCount = colsCount
+    Table.rowsCount = rowsCount
 
     return html
   }
@@ -55,61 +59,43 @@ export class Table extends ExcelComponent {
   }
 
   onKeydown(event) {
-    if (event.key === 'ArrowRight') {
-      const current = this.selection.currentCell.id(true)
+    const keys = ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter']
 
-      if (current.col + 1 < this.colsCount) {
-        const next = this.$root.find(`[data-id="${current.row}:${current.col + 1}"]`)
-        this.selection.select(next)
-        next.focus()
-      }
-    } else if (event.key === 'ArrowLeft') {
-      const current = this.selection.currentCell.id(true)
-
-      if (current.col !== 0) {
-        const next = this.$root.find(`[data-id="${current.row}:${current.col - 1}"]`)
-        this.selection.select(next)
-        next.focus()
-      }
-    } else if (event.key === 'ArrowUp') {
-      const current = this.selection.currentCell.id(true)
-
-      if (current.row !== 0) {
-        const next = this.$root.find(`[data-id="${current.row - 1}:${current.col}"]`)
-        this.selection.select(next)
-        next.focus()
-      }
-    } else if (event.key === 'ArrowDown') {
-      const current = this.selection.currentCell.id(true)
-
-      if (current.row + 1 < this.rowsCount) {
-        const next = this.$root.find(`[data-id="${current.row + 1}:${current.col}"]`)
-        this.selection.select(next)
-        next.focus()
-      }
-    } else if (event.key === 'Tab') {
+    if (keys.includes(event.key) && !event.shiftKey) {
       event.preventDefault()
       const current = this.selection.currentCell.id(true)
-      current.blur()
+      const next = this.$root.find(nextSelector(event.key, current))
 
-      if (current.col + 1 === this.colsCount && current.row + 1 === this.rowsCount) {
-      } else if (current.col + 1 === this.colsCount) {
-        const next = this.$root.find(`[data-id="${current.row + 1}:0"]`)
-        this.selection.select(next)
-      } else {
-        const next = this.$root.find(`[data-id="${current.row}:${current.col + 1}"]`)
-        this.selection.select(next)
-      }
-    } else if (event.key === 'Enter') {
-      event.preventDefault()
-      const current = this.selection.currentCell.id(true)
-
-      if (current.row + 1 < this.rowsCount) {
-        const next = this.$root.find(`[data-id="${current.row + 1}:${current.col}"]`)
-        this.selection.select(next)
-        next.focus()
-      }
+      this.selection.select(next)
+      next.focus()
     }
   }
 }
 
+function nextSelector(key, {row, col}) {
+  const MIN_VALUE = 0
+
+  switch (key) {
+    case 'Enter':
+    case 'ArrowDown':
+      row = row !== Table.rowsCount - 1 ? row + 1 : Table.rowsCount - 1
+      break
+    case 'Tab':
+      if (col === Table.colsCount - 1) {
+        col = 0
+        row = row + 1
+        break;
+      }
+    case 'ArrowRight':
+      col = col !== Table.colsCount - 1 ? col + 1 : Table.colsCount - 1
+      break;
+    case 'ArrowLeft':
+      col = col > MIN_VALUE ? col - 1 : MIN_VALUE
+      break
+    case 'ArrowUp':
+      row = row > MIN_VALUE ? row - 1 : MIN_VALUE
+      break
+  }
+
+  return `[data-id="${row}:${col}"]`
+}

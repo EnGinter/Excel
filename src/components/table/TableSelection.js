@@ -25,5 +25,11 @@ export class TableSelection {
 
     this.selected.forEach($el => $el.addClass(TableSelection.selectedClassName))
   }
+
+  selectByKey(row, col) {
+    const next = this.$root.find(`[data-id="${col}:${row}"]`)
+    this.select(next)
+    next.focus()
+  }
 }
 
